@@ -225,31 +225,32 @@ class LocationView(generic.ObjectView):
 
     def get_extra_context(self, request, instance):
         related_locations = (
-            instance.descendants(include_self=True).restrict(request.user, "view").values_list("pk", flat=True)
+            instance.descendants(include_self=True).restrict(request.user, "view")
         )
+        related_location_pks = related_locations.values_list("pk", flat=True)
         stats = {
-            "rack_count": Rack.objects.restrict(request.user, "view").filter(location__in=related_locations).count(),
+            "rack_count": Rack.objects.restrict(request.user, "view").filter(location__in=related_location_pks).count(),
             "device_count": Device.objects.restrict(request.user, "view")
-            .filter(location__in=related_locations)
+            .filter(location__in=related_location_pks)
             .count(),
             "prefix_count": Prefix.objects.restrict(request.user, "view")
-            .filter(location__in=related_locations)
+            .filter(location__in=related_location_pks)
             .count(),
-            "vlan_count": VLAN.objects.restrict(request.user, "view").filter(location__in=related_locations).count(),
+            "vlan_count": VLAN.objects.restrict(request.user, "view").filter(location__in=related_location_pks).count(),
             "circuit_count": Circuit.objects.restrict(request.user, "view")
-            .filter(circuit_terminations__location__in=related_locations)
+            .filter(circuit_terminations__location__in=related_location_pks)
             .count(),
             "vm_count": VirtualMachine.objects.restrict(request.user, "view")
-            .filter(cluster__location__in=related_locations)
+            .filter(cluster__location__in=related_location_pks)
             .count(),
         }
         rack_groups = (
             RackGroup.objects.annotate(rack_count=count_related(Rack, "rack_group"))
             .restrict(request.user, "view")
-            .filter(location__in=related_locations)
+            .filter(location__in=related_location_pks)
         )
         children = (
-            Location.objects.restrict(request.user, "view")
+            related_locations
             .filter(parent=instance)
             .select_related("parent", "location_type")
         )
