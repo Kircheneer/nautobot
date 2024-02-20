@@ -22,7 +22,7 @@ urlpatterns = [
     ),
     path(
         "circuits/<uuid:circuit>/terminations/add/",
-        views.CircuitTerminationUIViewSet.as_view({"get": "create", "post": "create"}),
+        views.CircuitTerminationUIViewSet.as_view({"get": "create", "post": "create"}),  # pyright: ignore[reportGeneralTypeIssues]
         name="circuittermination_add",
     ),
     path(

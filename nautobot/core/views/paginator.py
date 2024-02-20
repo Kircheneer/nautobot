@@ -1,4 +1,5 @@
 from django.core.paginator import Page, Paginator
+from django.http import HttpRequest
 
 from nautobot.core.utils import config
 
@@ -41,7 +42,7 @@ class EnhancedPage(Page):
         return page_list
 
 
-def get_paginate_count(request):
+def get_paginate_count(request: HttpRequest) -> int:
     """
     Determine the length of a page, using the following in order:
 

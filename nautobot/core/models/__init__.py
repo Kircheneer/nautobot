@@ -1,3 +1,4 @@
+from typing import ClassVar
 import uuid
 
 from django.conf import settings
@@ -45,7 +46,7 @@ class BaseModel(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True, editable=False)
 
-    objects = BaseManager.from_queryset(RestrictedQuerySet)()
+    objects: ClassVar[RestrictedQuerySet] = BaseManager.from_queryset(RestrictedQuerySet)()
 
     class Meta:
         abstract = True

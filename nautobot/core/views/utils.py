@@ -1,12 +1,15 @@
 import datetime
 from io import BytesIO
+from typing import Type, Any, OrderedDict, TypedDict
 
 from django.contrib import messages
 from django.core.exceptions import FieldError, ValidationError
-from django.db.models import ForeignKey
+from django.db.models import ForeignKey, Model, ProtectedError
+from django.http import HttpRequest
 from django.utils.html import format_html, format_html_join
 from django.utils.safestring import mark_safe
 from rest_framework import exceptions, serializers
+from rest_framework.serializers import Serializer
 
 from nautobot.core.api.fields import ChoiceField, ContentTypeField, TimeZoneSerializerField
 from nautobot.core.api.parsers import NautobotCSVParser
@@ -16,7 +19,12 @@ from nautobot.core.utils.filtering import get_filter_field_label
 from nautobot.core.utils.lookup import get_form_for_model
 
 
-def check_filter_for_display(filters, field_name, values):
+class CheckFilterForDisplayDict(TypedDict):
+    name: str
+    display: str
+    values: list[dict]
+
+def check_filter_for_display(filters: OrderedDict[Any, Any], field_name: str, values: list[str]) -> CheckFilterForDisplayDict:
     """
     Return any additional context data for the template.
 
@@ -61,7 +69,7 @@ def check_filter_for_display(filters, field_name, values):
 
 
 # 2.2 TODO: remove this method as it's no longer used in core.
-def csv_format(data):
+def csv_format(data: list[Any]) -> dict[Any, Any]:
     """
     Convert the given list of data to a CSV row string.
 
@@ -94,7 +102,7 @@ def csv_format(data):
     return ",".join(csv)
 
 
-def get_csv_form_fields_from_serializer_class(serializer_class):
+def get_csv_form_fields_from_serializer_class(serializer_class: Type[Serializer[Any]]) -> list[dict[Any, Any]]:
     """From the given serializer class, build a list of field dicts suitable for rendering in the CSV import form."""
     serializer = serializer_class(context={"request": None, "depth": 0})
     fields = []
@@ -198,7 +206,7 @@ def import_csv_helper(*, request, form, serializer_class):
     return new_objs
 
 
-def handle_protectederror(obj_list, request, e):
+def handle_protectederror(obj_list: list[Model], request: HttpRequest, e: ProtectedError) -> None:
     """
     Generate a user-friendly error message in response to a ProtectedError exception.
     """
@@ -220,7 +228,7 @@ def handle_protectederror(obj_list, request, e):
     messages.error(request, err_message)
 
 
-def prepare_cloned_fields(instance):
+def prepare_cloned_fields(instance: Model) -> str:
     """
     Compile an object's `clone_fields` list into a string of URL query parameters. Tags are automatically cloned where
     applicable.

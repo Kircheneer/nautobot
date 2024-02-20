@@ -197,7 +197,7 @@ class ProviderNetworkUIViewSet(NautobotUIViewSet):
             circuits_table.columns.hide("circuit_termination_z")
 
             paginate = {"paginator_class": EnhancedPaginator, "per_page": get_paginate_count(request)}
-            RequestConfig(request, paginate).configure(circuits_table)
+            RequestConfig(request, paginate).configure(circuits_table)  # pyright: ignore[reportGeneralTypeIssues]
 
             context["circuits_table"] = circuits_table
         return context
@@ -260,9 +260,13 @@ class CircuitSwapTerminations(generic.ObjectEditView):
             elif circuit_termination_a:
                 circuit_termination_a.term_side = "Z"
                 circuit_termination_a.save()
-            else:
+            elif circuit_termination_z:
                 circuit_termination_z.term_side = "A"
                 circuit_termination_z.save()
+            else:
+                messages.error(
+                    request, f"Unable to swap terminations for circuit {circuit} as it doesn't have a termination."
+                )
 
             messages.success(request, f"Swapped terminations for circuit {circuit}.")
             return redirect("circuits:circuit", pk=circuit.pk)

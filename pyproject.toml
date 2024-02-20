@@ -169,6 +169,8 @@ rich = "~13.4.2"
 towncrier = "~23.6.0"
 # Watch files for celery and mkdocs reload
 watchdog = "~3.0.0"
+django-types = "^0.19.1"
+pyright = "^1.1.351"
 
 [tool.poetry.group.docs.dependencies]
 # Rendering docs to HTML
@@ -404,3 +406,18 @@ showcontent = true
 directory = "housekeeping"
 name = "Housekeeping"
 showcontent = true
+
+[tool.pyright]
+include = [
+    "nautobot/apps",
+]
+strict = [
+    "nautobot/apps",
+]
+exclude = [
+    "nautobot/**/tests/**", # Maybe should be included at some point
+    "nautobot/**/migrations/**", # Safe to ignore
+    "nautobot/**/factory.py", # Is using some unique paradigms that pyright doesn't like
+]
+venvPath = "."
+venv = ".venv"

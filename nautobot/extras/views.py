@@ -1,5 +1,7 @@
 from datetime import timedelta
 import logging
+from typing import Any, Callable
+from uuid import UUID
 
 from celery import chain
 from django.contrib import messages
@@ -8,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import transaction
 from django.db.models import ProtectedError, Q
 from django.forms.utils import pretty_name
-from django.http import Http404, HttpResponse, HttpResponseForbidden
+from django.http import Http404, HttpRequest, HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template, TemplateDoesNotExist
 from django.urls import reverse
@@ -894,14 +896,16 @@ class GitRepositoryBulkDeleteView(generic.BulkDeleteView):
         }
 
 
-def check_and_call_git_repository_function(request, pk, func):
+def check_and_call_git_repository_function(
+    request: HttpRequest, pk: UUID, func: Callable[[GitRepository, Any], JobResult]
+) -> HttpResponse:
     """Helper for checking Git permissions and worker availability, then calling provided function if all is well
     Args:
-        request (HttpRequest): request object.
-        pk (UUID): GitRepository pk value.
-        func (function): Enqueue git repo function.
+        request: request object.
+        pk: GitRepository pk value.
+        func: Enqueue git repo function.
     Returns:
-        (Union[HttpResponseForbidden,redirect]): HttpResponseForbidden if user does not have permission to run the job,
+        HttpResponseForbidden if user does not have permission to run the job,
             otherwise redirect to the job result page.
     """
     if not request.user.has_perm("extras.change_gitrepository"):

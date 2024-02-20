@@ -4,6 +4,7 @@ import hmac
 import logging
 import re
 import sys
+from typing import Type, Tuple
 
 from django.apps import apps
 from django.conf import settings
@@ -23,6 +24,8 @@ from nautobot.extras.constants import (
     JOB_MAX_NAME_LENGTH,
     JOB_OVERRIDABLE_FIELDS,
 )
+from nautobot.extras.models import Job as JobModelClass
+from nautobot.extras.jobs import Job as JobClass
 from nautobot.extras.registry import registry
 
 logger = logging.getLogger(__name__)
@@ -308,7 +311,7 @@ def get_worker_count(request=None, queue=None):
     return celery_queues.get(queue, 0)
 
 
-def task_queues_as_choices(task_queues):
+def task_queues_as_choices(task_queues: list[str | None]) -> list[tuple[str, str]]:
     """
     Returns a list of 2-tuples for use in the form field `choices` argument. Appends
     worker count to the description.
@@ -328,7 +331,7 @@ def task_queues_as_choices(task_queues):
     return choices
 
 
-def refresh_job_model_from_job_class(job_model_class, job_class):
+def refresh_job_model_from_job_class(job_model_class: Type[JobModelClass], job_class: Type[JobClass]) -> Tuple[JobClass | None, bool]:
     """
     Create or update a job_model record based on the metadata of the provided job_class.
 
@@ -462,7 +465,7 @@ def refresh_job_model_from_job_class(job_model_class, job_class):
     return (job_model, created)
 
 
-def remove_prefix_from_cf_key(field_name):
+def remove_prefix_from_cf_key(field_name: str) -> str:
     """
     field_name (str): f"cf_{cf.key}"
 

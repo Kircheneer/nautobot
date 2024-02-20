@@ -3,6 +3,7 @@ from datetime import date, datetime
 from functools import lru_cache
 import logging
 import re
+from typing import ClassVar
 
 from django import forms
 from django.contrib.contenttypes.models import ContentType
@@ -399,7 +400,7 @@ class CustomField(BaseModel, ChangeLoggedModel, NotesMixin):
         'It will appear in the "Advanced" tab instead.',
     )
 
-    objects = CustomFieldManager()
+    objects: ClassVar[CustomFieldManager] = CustomFieldManager()
 
     clone_fields = [
         "content_types",

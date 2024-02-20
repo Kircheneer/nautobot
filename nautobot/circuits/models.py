@@ -127,7 +127,7 @@ class Circuit(PrimaryModel):
     """
 
     cid = models.CharField(max_length=100, verbose_name="Circuit ID")
-    status = StatusField(blank=False, null=False)
+    status = StatusField(blank=False, null=False)  # pyright: ignore[reportGeneralTypeIssues]
     provider = models.ForeignKey(to="circuits.Provider", on_delete=models.PROTECT, related_name="circuits")
     circuit_type = models.ForeignKey(to="CircuitType", on_delete=models.PROTECT, related_name="circuits")
     tenant = models.ForeignKey(
