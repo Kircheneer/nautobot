@@ -1,7 +1,10 @@
 import logging
+from typing import TypeVar
 
 from django.db.models import Manager
 from taggit.managers import _TaggableManager
+
+from nautobot.core.models import BaseModel
 
 logger = logging.getLogger(__name__)
 

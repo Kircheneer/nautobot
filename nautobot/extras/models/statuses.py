@@ -2,9 +2,11 @@ from functools import partialmethod
 
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.db.models import Manager
 from django.utils.encoding import force_str
 from django.utils.hashable import make_hashable
 
+from nautobot.core.models import RestrictedQuerySet, BaseManager, ContentTypeRelatedQuerySet
 from nautobot.core.models.fields import ForeignKeyLimitedByContentTypes
 from nautobot.core.models.name_color_content_types import NameColorContentTypesModel
 from nautobot.core.utils.deprecation import class_deprecated

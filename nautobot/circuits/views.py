@@ -261,7 +261,7 @@ class CircuitSwapTerminations(generic.ObjectEditView):
             elif circuit_termination_a:
                 circuit_termination_a.term_side = "Z"
                 circuit_termination_a.save()
-            else:
+            elif circuit_termination_z:
                 circuit_termination_z.term_side = "A"
                 circuit_termination_z.save()
 

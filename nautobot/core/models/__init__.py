@@ -1,4 +1,5 @@
 import uuid
+from typing import Self, TypeVar, Union
 
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
@@ -47,7 +48,9 @@ class BaseModel(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True, editable=False)
 
-    objects = BaseManager.from_queryset(RestrictedQuerySet)()
+    # This type annotation is technically incorrect, but django-stubs adds manager methods on all
+    # querysets, which is why this works.
+    objects: RestrictedQuerySet = BaseManager.from_queryset(RestrictedQuerySet)()
     is_contact_associable_model = False  # ContactMixin overrides this to default True
     is_dynamic_group_associable_model = False  # DynamicGroupMixin overrides this to default True
     is_metadata_associable_model = True

@@ -175,6 +175,8 @@ rich = "~13.7.1"
 towncrier = "~23.11.0"
 # Watch files for celery and mkdocs reload
 watchdog = "~4.0.1"
+pyright = "^1.1.376"
+django-stubs = "^5.0.4"
 
 [tool.poetry.group.docs.dependencies]
 # Rendering docs to HTML
@@ -421,3 +423,18 @@ showcontent = true
 directory = "housekeeping"
 name = "Housekeeping"
 showcontent = true
+
+[tool.pyright]
+include = ["nautobot/circuits"]
+exclude = [
+    "**/__pycache__",
+    "**/tests",
+    "**/factory.py"
+]
+executionEnvironments = [
+    { root = "nautobot" }
+]
+stubPath = "typings"
+typeCheckingMode = "basic"
+venvPath = "."
+venv = ".venv"

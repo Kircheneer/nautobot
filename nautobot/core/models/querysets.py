@@ -1,9 +1,13 @@
+from typing import Generic, TypeVar, Type, Self
+
 from django.db.models import Count, OuterRef, Q, QuerySet, Subquery
 from django.db.models.functions import Coalesce
 
+from nautobot.core.models import BaseModel
 from nautobot.core.models.utils import deconstruct_composite_key
 from nautobot.core.utils import permissions
 from nautobot.core.utils.data import merge_dicts_without_collision
+from nautobot.users.models import User
 
 
 def count_related(model, field, *, filter_dict=None, manager_name="objects", distinct=False):

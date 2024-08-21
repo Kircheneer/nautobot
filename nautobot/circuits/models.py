@@ -20,6 +20,8 @@ __all__ = (
     "ProviderNetwork",
 )
 
+from ..core.models import BaseManager, RestrictedQuerySet
+
 
 @extras_features(
     "custom_links",

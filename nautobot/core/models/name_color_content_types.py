@@ -41,7 +41,7 @@ class NameColorContentTypesModel(
         blank=True,
     )
 
-    objects = BaseManager.from_queryset(ContentTypeRelatedQuerySet)()
+    objects: BaseManager.from_queryset(ContentTypeRelatedQuerySet) = BaseManager.from_queryset(ContentTypeRelatedQuerySet)()
 
     clone_fields = ["color", "content_types"]
 
