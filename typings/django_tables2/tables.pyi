@@ -98,7 +98,9 @@ class Table(metaclass=DeclarativeColumnsMetaclass):
             extra columns to add to the instance. If `column` is `None`, the column
             with `name` will be removed from the table.
     """
+
     columns: columns.BoundColumns
+    default: str
 
     def __init__(self, data=..., order_by=..., orderable=..., empty_text=..., exclude=..., attrs=..., row_attrs=..., pinned_row_attrs=..., sequence=..., prefix=..., order_by_field=..., page_field=..., per_page_field=..., template_name=..., default=..., request=..., show_header=..., show_footer=..., extra_columns=...) -> None:
         ...

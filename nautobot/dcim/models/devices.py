@@ -1,3 +1,4 @@
+import typing
 from collections import OrderedDict
 
 from django.contrib.contenttypes.fields import GenericRelation
@@ -29,6 +30,10 @@ from nautobot.dcim.utils import get_all_network_driver_mappings
 from nautobot.extras.models import ChangeLoggedModel, ConfigContextModel, RoleField, StatusField
 from nautobot.extras.querysets import ConfigContextModelQuerySet
 from nautobot.extras.utils import extras_features
+
+if typing.TYPE_CHECKING:
+    from . import Rack, ConsolePortTemplate, ConsoleServerPortTemplate, PowerPortTemplate, PowerOutletTemplate, \
+    InterfaceTemplate, FrontPortTemplate, RearPortTemplate, DeviceBayTemplate, ModuleBayTemplate
 
 from .device_components import (
     ConsolePort,
@@ -187,6 +192,16 @@ class DeviceType(PrimaryModel):
         verbose_name="Software Image Files",
     )
     comments = models.TextField(blank=True)
+
+    console_port_templates: RestrictedQuerySet[ConsolePortTemplate]
+    console_server_port_templates: RestrictedQuerySet[ConsoleServerPortTemplate]
+    power_port_templates: RestrictedQuerySet[PowerPortTemplate]
+    power_outlet_templates: RestrictedQuerySet[PowerOutletTemplate]
+    interface_templates: RestrictedQuerySet[InterfaceTemplate]
+    front_port_templates: RestrictedQuerySet[FrontPortTemplate]
+    rear_port_templates: RestrictedQuerySet[RearPortTemplate]
+    device_bay_templates: RestrictedQuerySet[DeviceBayTemplate]
+    module_bay_templates: RestrictedQuerySet[ModuleBayTemplate]
 
     clone_fields = [
         "manufacturer",
@@ -512,7 +527,7 @@ class Device(PrimaryModel, ConfigContextModel):
         on_delete=models.PROTECT,
         related_name="devices",
     )
-    rack = models.ForeignKey(
+    rack = models.ForeignKey[Rack](
         to="dcim.Rack",
         on_delete=models.PROTECT,
         related_name="devices",
@@ -1684,6 +1699,14 @@ class Module(PrimaryModel):
         "location",
         "status",
     ]
+
+    console_ports: RestrictedQuerySet[ConsolePort]
+    console_server_ports: RestrictedQuerySet[ConsoleServerPort]
+    power_ports: RestrictedQuerySet[PowerPort]
+    power_outlets: RestrictedQuerySet[PowerOutlet]
+    interfaces: RestrictedQuerySet[Interface]
+    rear_ports: RestrictedQuerySet[RearPort]
+    front_ports: RestrictedQuerySet[FrontPort]
 
     # The recursive nature of this model combined with the fact that it can be a child of a
     # device or location makes our natural key implementation unusable, so just use the pk

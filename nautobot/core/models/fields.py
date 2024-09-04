@@ -1,9 +1,11 @@
 import json
 import re
+from typing import Any
 
 from django.core import exceptions
 from django.core.validators import MaxLengthValidator, RegexValidator
 from django.db import models
+from django.db.models import Field
 from django.utils.text import slugify
 from django_extensions.db.fields import AutoSlugField as _AutoSlugField
 from netaddr import AddrFormatError, EUI, mac_unix_expanded
@@ -282,7 +284,7 @@ class JSONArrayField(models.JSONField):
 
     _default_hint = ("list", "[]")
 
-    def __init__(self, base_field, **kwargs):
+    def __init__(self, base_field: Field, **kwargs: Any):
         if isinstance(base_field, JSONArrayField):
             raise TypeError("cannot nest JSONArrayFields")
         self.base_field = base_field

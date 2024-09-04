@@ -6,6 +6,7 @@ from django.utils.functional import classproperty
 from timezone_field import TimeZoneField
 
 from nautobot.core.constants import CHARFIELD_MAX_LENGTH
+from nautobot.core.models import RestrictedQuerySet
 from nautobot.core.models.fields import NaturalOrderingField
 from nautobot.core.models.generics import OrganizationalModel, PrimaryModel
 from nautobot.core.models.tree_queries import TreeManager, TreeModel, TreeQuerySet
@@ -53,6 +54,8 @@ class LocationType(TreeModel, OrganizationalModel):
 
     class Meta:
         ordering = ("name",)
+
+    locations: RestrictedQuerySet["Location"]
 
     def __str__(self):
         return self.name
@@ -193,7 +196,7 @@ class Location(TreeModel, PrimaryModel):
     comments = models.TextField(blank=True)
     images = GenericRelation(to="extras.ImageAttachment")
 
-    objects = LocationManager()
+    objects: LocationQuerySet = LocationManager()
 
     clone_fields = [
         "location_type",

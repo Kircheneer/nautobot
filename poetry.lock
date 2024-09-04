@@ -1028,45 +1028,6 @@ celery = ["celery (>=5.1)"]
 commands = ["django-extensions (>=1.4.9)"]
 
 [[package]]
-name = "django-stubs"
-version = "5.0.4"
-description = "Mypy stubs for Django"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "django_stubs-5.0.4-py3-none-any.whl", hash = "sha256:c2502f5ecbae50c68f9a86d52b5b2447d8648fd205036dad0ccb41e19a445927"},
-    {file = "django_stubs-5.0.4.tar.gz", hash = "sha256:78e3764488fdfd2695f12502136548ec22f8d4b1780541a835042b8238d11514"},
-]
-
-[package.dependencies]
-asgiref = "*"
-django = "*"
-django-stubs-ext = ">=5.0.4"
-tomli = {version = "*", markers = "python_version < \"3.11\""}
-types-PyYAML = "*"
-typing-extensions = ">=4.11.0"
-
-[package.extras]
-compatible-mypy = ["mypy (>=1.11.0,<1.12.0)"]
-oracle = ["oracledb"]
-redis = ["redis"]
-
-[[package]]
-name = "django-stubs-ext"
-version = "5.0.4"
-description = "Monkey-patching and extensions for django-stubs"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "django_stubs_ext-5.0.4-py3-none-any.whl", hash = "sha256:910cbaff3d1e8e806a5c27d5ddd4088535aae8371ea921b7fd680fdfa5f14e30"},
-    {file = "django_stubs_ext-5.0.4.tar.gz", hash = "sha256:85da065224204774208be29c7d02b4482d5a69218a728465c2fbe41725fdc819"},
-]
-
-[package.dependencies]
-django = "*"
-typing-extensions = "*"
-
-[[package]]
 name = "django-tables2"
 version = "2.7.0"
 description = "Table/data-grid framework for Django"
@@ -1125,6 +1086,20 @@ files = [
 
 [package.extras]
 tests = ["coverage"]
+
+[[package]]
+name = "django-types"
+version = "0.19.1"
+description = "Type stubs for Django"
+optional = false
+python-versions = ">=3.7,<4.0"
+files = [
+    {file = "django_types-0.19.1-py3-none-any.whl", hash = "sha256:b3f529de17f6374d41ca67232aa01330c531bbbaa3ac4097896f31ac33c96c30"},
+    {file = "django_types-0.19.1.tar.gz", hash = "sha256:5ae7988612cf6fbc357b018bbc3b3a878b65e04275cc46e0d35d66a708daff12"},
+]
+
+[package.dependencies]
+types-psycopg2 = ">=2.9.21.13"
 
 [[package]]
 name = "django-webserver"
@@ -4022,14 +3997,14 @@ ttp = ">=0.6.0"
 docs = ["mkdocs (==1.2.4)", "mkdocs-material (==7.2.2)", "mkdocs-material-extensions (==1.0.1)", "mkdocstrings[python] (>=0.18.0,<0.19.0)", "pygments (==2.11)", "pymdown-extensions (==9.3)"]
 
 [[package]]
-name = "types-pyyaml"
-version = "6.0.12.20240808"
-description = "Typing stubs for PyYAML"
+name = "types-psycopg2"
+version = "2.9.21.20240819"
+description = "Typing stubs for psycopg2"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-PyYAML-6.0.12.20240808.tar.gz", hash = "sha256:b8f76ddbd7f65440a8bda5526a9607e4c7a322dc2f8e1a8c405644f9a6f4b9af"},
-    {file = "types_PyYAML-6.0.12.20240808-py3-none-any.whl", hash = "sha256:deda34c5c655265fc517b546c902aa6eed2ef8d3e921e4765fe606fe2afe8d35"},
+    {file = "types-psycopg2-2.9.21.20240819.tar.gz", hash = "sha256:4ed6b47464d6374fa64e5e3b234cea0f710e72123a4596d67ab50b7415a84666"},
+    {file = "types_psycopg2-2.9.21.20240819-py3-none-any.whl", hash = "sha256:c9192311c27d7ad561eef705f1b2df1074f2cdcf445a98a6a2fcaaaad43278cf"},
 ]
 
 [[package]]
@@ -4337,4 +4312,4 @@ sso = ["social-auth-core"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.13"
-content-hash = "934bebf789a5a2ad4bab6246878b96ca2e24cd9594e7a39e3a26cbd01ac22e79"
+content-hash = "2e1c6589f68d6127dae7d167da00dd9fc17833528d3add2afc111f65ba8c73f0"

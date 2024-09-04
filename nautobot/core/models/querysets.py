@@ -110,8 +110,11 @@ class CompositeKeyQuerySetMixin:
         return super().exclude(*args, **self.split_composite_key_into_kwargs(composite_key, **kwargs))
 
 
-class RestrictedQuerySet(CompositeKeyQuerySetMixin, QuerySet):
-    def restrict(self, user, action="view"):
+M = TypeVar("M", bound=BaseModel)
+
+
+class RestrictedQuerySet(CompositeKeyQuerySetMixin, QuerySet[M]):
+    def restrict(self, user, action="view") -> Self:
         """
         Filter the QuerySet to return only objects on which the specified user has been granted the specified
         permission.

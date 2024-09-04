@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Count, Q, Sum
+from django.db.models.manager import RelatedManager
 
 from nautobot.core.constants import CHARFIELD_MAX_LENGTH
 from nautobot.core.models.fields import JSONArrayField, NaturalOrderingField
@@ -28,6 +29,8 @@ __all__ = (
     "RackGroup",
     "RackReservation",
 )
+
+from ...core.models import RestrictedQuerySet
 
 
 #
@@ -187,6 +190,9 @@ class Rack(PrimaryModel):
     ]
     dynamic_group_filter_fields = {}
     dynamic_group_skip_missing_fields = True  # Poor widget selection for `outer_depth` (no validators, limit supplied)
+
+    devices: RestrictedQuerySet[Device]
+    rack_reservations: RestrictedQuerySet["RackReservation"]
 
     class Meta:
         ordering = ("location", "rack_group", "_name")  # (location, rack_group, name) may be non-unique

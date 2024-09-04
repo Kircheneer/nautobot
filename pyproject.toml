@@ -176,7 +176,7 @@ towncrier = "~23.11.0"
 # Watch files for celery and mkdocs reload
 watchdog = "~4.0.1"
 pyright = "^1.1.376"
-django-stubs = "^5.0.4"
+django-types = "^0.19.1"
 
 [tool.poetry.group.docs.dependencies]
 # Rendering docs to HTML
@@ -425,11 +425,15 @@ name = "Housekeeping"
 showcontent = true
 
 [tool.pyright]
-include = ["nautobot/circuits"]
+include = [
+    "nautobot/circuits",
+    "nautobot/dcim",
+]
 exclude = [
     "**/__pycache__",
     "**/tests",
-    "**/factory.py"
+    "**/factory.py",  # factoryboy uses lots of difficult to type patterns
+    "**/migrations/**",
 ]
 executionEnvironments = [
     { root = "nautobot" }
